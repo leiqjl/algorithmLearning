@@ -1,5 +1,8 @@
 package com.algorithm;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
+
 public class BST<K extends Comparable<K>, V> {
     private Node root;
 
@@ -68,7 +71,13 @@ public class BST<K extends Comparable<K>, V> {
     }
 
     private Node min(Node x) {
-        return x == null ? null : min(x.left);
+        if (x == null) {
+            return null;
+        }
+        if (x.left == null) {
+            return x;
+        }
+        return min(x.left);
     }
 
     public K max() {
@@ -77,7 +86,13 @@ public class BST<K extends Comparable<K>, V> {
     }
 
     private Node max(Node x) {
-        return x == null ? null : max(x.right);
+        if (x == null) {
+            return null;
+        }
+        if (x.right == null) {
+            return x;
+        }
+        return min(x.right);
     }
 
     public K floor(K key) {
@@ -157,4 +172,107 @@ public class BST<K extends Comparable<K>, V> {
             return size(x.left);
         }
     }
+
+    public void deleteMin() {
+        root = deleteMin(root);
+    }
+
+    private Node deleteMin(Node x) {
+        if (x == null) {
+            return null;
+        }
+        if (x.left == null) {
+            return x.right;
+        }
+        x.left = deleteMin(x.left);
+        x.n = size(x.left) + size(x.right) + 1;
+        return x;
+    }
+
+    public void deleteMax() {
+        root = deleteMax(root);
+    }
+
+    private Node deleteMax(Node x) {
+        if (x == null) {
+            return null;
+        }
+        if (x.right == null) {
+            return x.left;
+        }
+        x.right = deleteMax(x.right);
+        x.n = size(x.left) + size(x.right) + 1;
+        return x;
+    }
+
+    public void delete(K key) {
+        root = delete(root, key);
+    }
+
+    private Node delete(Node x, K key) {
+        if (x == null) {
+            return null;
+        }
+        int cmp = key.compareTo(x.key);
+        if (cmp < 0) {
+            x.left = delete(x.left, key);
+        } else if (cmp > 0) {
+            x.right = delete(x.right, key);
+        } else {
+            if (x.right == null) {
+                return x.left;
+            }
+            if (x.left == null) {
+                return x.right;
+            }
+            Node t = x;
+            x = min(t.right);
+            x.right = deleteMin(t.right);
+            x.left = t.left;
+        }
+        x.n = size(x.left) + size(x.right) + 1;
+        return x;
+    }
+
+    public void print() {
+        print(root);
+        System.out.println();
+    }
+
+    private void print(Node x) {
+        if (x == null) {
+            return;
+        }
+        print(x.left);
+        System.out.print(x.key + ":" + x.val + " ");
+        print(x.right);
+    }
+
+    public Iterable<K> keys() {
+        return keys(min(), max());
+    }
+
+    public Iterable<K> keys(K lo, K hi) {
+        Queue<K> queue = new ArrayDeque<>();
+        keys(root, queue, lo, hi);
+        return queue;
+    }
+
+    private void keys(Node x, Queue<K> queue, K lo, K hi) {
+        if (x == null) {
+            return;
+        }
+        int cmplo = lo.compareTo(x.key);
+        int cmphi = hi.compareTo(x.key);
+        if (cmplo < 0) {
+            keys(x.left, queue, lo, hi);
+        }
+        if (cmplo <= 0 && cmphi >= 0) {
+            queue.add(x.key);
+        }
+        if (cmphi > 0) {
+            keys(x.right, queue, lo, hi);
+        }
+    }
+
 }
