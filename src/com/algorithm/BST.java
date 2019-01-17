@@ -2,6 +2,7 @@ package com.algorithm;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
+import java.util.Stack;
 
 public class BST<K extends Comparable<K>, V> {
     private Node root;
@@ -74,10 +75,10 @@ public class BST<K extends Comparable<K>, V> {
             } else if (cmp > 0) {
                 x = x.right;
             } else {
-                break;
+                return x.val;
             }
         }
-        return x == null ? null : x.val;
+        return null;
     }
 
     private V get(Node x, K key) {
@@ -115,6 +116,49 @@ public class BST<K extends Comparable<K>, V> {
         return x;
     }
 
+    public void putIteration(K key, V val) {
+        Node z = new Node(key, val, 1, 0);
+        if (root == null) {
+            root = z;
+            return;
+        }
+        Node parent = null, x = root;
+        Stack<Node> stack = new Stack<>();
+        stack.push(root);
+        while (x != null) {
+            parent = x;
+            stack.push(x);
+            int cmp = key.compareTo(x.key);
+            if (cmp < 0) {
+                x = x.left;
+            } else if (cmp > 0) {
+                x = x.right;
+            } else {
+                x.val = val;
+                return;
+            }
+        }
+        int cmp = key.compareTo(parent.key);
+        if (cmp < 0) {
+            parent.left  = z;
+        } else {
+            parent.right = z;
+        }
+        while (!stack.isEmpty()) {
+            Node pop = stack.pop();
+            pop.n = size(pop.left) + size(pop.right) + 1;
+            pop.h = Math.max(height(pop.left), height(pop.right)) + 1;
+        }
+    }
+
+    public K minIteration() {
+        Node x = root;
+        while (x != null && x.left != null) {
+            x = x.left;
+        }
+        return x == null ? null : x.key;
+    }
+
     public K min() {
         Node x = min(root);
         return x == null ? null : x.key;
@@ -145,6 +189,14 @@ public class BST<K extends Comparable<K>, V> {
         return min(x.right);
     }
 
+    public K maxIteration() {
+        Node x = root;
+        while (x != null && x.right != null) {
+            x = x.right;
+        }
+        return x == null ? null : x.key;
+    }
+
     public K floor(K key) {
         Node x = floor(root, key);
         return x == null ? null : x.key;
@@ -163,6 +215,25 @@ public class BST<K extends Comparable<K>, V> {
         }
         Node node = floor(x.right, key);
         return node == null ? x : node;
+    }
+    public K floorIteration(K key) {
+        if (root == null) {
+            return null;
+        }
+        Node target = null;
+        Node x = root;
+        while (x != null) {
+            int cmp = key.compareTo(x.key);
+            if (cmp == 0) {
+                return x.key;
+            } else if (cmp < 0){
+                x = x.left;
+            } else {
+                target = x;
+                x = x.right;
+            }
+        }
+        return target == null ? null : target.key;
     }
 
     public K ceiling(K key) {
@@ -184,6 +255,26 @@ public class BST<K extends Comparable<K>, V> {
         }
         Node node = ceiling(x.left, key);
         return node == null ? x : node;
+    }
+
+    public K ceilingIteration(K key) {
+        if (root == null) {
+            return null;
+        }
+        Node target = null;
+        Node x = root;
+        while (x != null) {
+            int cmp = key.compareTo(x.key);
+            if (cmp == 0) {
+                return x.key;
+            } else if (cmp > 0){
+                x = x.right;
+            } else {
+                target = x;
+                x = x.left;
+            }
+        }
+        return target == null ? null : target.key;
     }
 
     public K select(int k) {
@@ -221,6 +312,17 @@ public class BST<K extends Comparable<K>, V> {
         } else {
             return size(x.left);
         }
+    }
+
+    public int rankIteration(K key) {
+        Node x = root;
+        if (x == null) {
+            return 0;
+        }
+        while (x != null) {
+            //TODO
+        }
+        return 0;
     }
 
     public void deleteMin() {
