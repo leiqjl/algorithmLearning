@@ -11,12 +11,24 @@ public class BST<K extends Comparable<K>, V> {
         private V val;
         private Node left, right;
         private int n;
+        private int h;
 
         public Node(K key, V val, int n) {
             this.key = key;
             this.val = val;
             this.n = n;
         }
+
+        public Node(K key, V val, int n, int h) {
+            this.key = key;
+            this.val = val;
+            this.n = n;
+            this.h = h;
+        }
+    }
+
+    public boolean isEmpty() {
+        return size() == 0;
     }
 
     public int size() {
@@ -26,6 +38,28 @@ public class BST<K extends Comparable<K>, V> {
     private int size(Node x) {
         return x == null ? 0 : x.n;
     }
+
+    public int height() {
+        return height(root);
+    }
+
+    private int height(Node x) {
+        return x == null ? -1 : x.h;
+    }
+
+    public int height1() {
+        return height1(root);
+    }
+
+    private int height1(Node x) {
+        if (x == null) {
+            return -1;
+        }
+        int lh = height1(x.left);
+        int rh = height1(x.right);
+        return Math.max(lh, rh) + 1;
+    }
+
 
     public V get(K key) {
         return get(root, key);
@@ -66,7 +100,7 @@ public class BST<K extends Comparable<K>, V> {
 
     private Node put(Node x, K key, V val) {
         if (x == null) {
-            return new Node(key, val, 1);
+            return new Node(key, val, 1, 0);
         }
         int cmp = key.compareTo(x.key);
         if (cmp < 0) {
@@ -77,6 +111,7 @@ public class BST<K extends Comparable<K>, V> {
             x.val = val;
         }
         x.n = size(x.left) + size(x.right) + 1;
+        x.h = Math.max(height(x.left), height(x.right)) + 1;
         return x;
     }
 
@@ -201,6 +236,7 @@ public class BST<K extends Comparable<K>, V> {
         }
         x.left = deleteMin(x.left);
         x.n = size(x.left) + size(x.right) + 1;
+        x.h = Math.max(height1(x.left), height1(x.right)) + 1;
         return x;
     }
 
@@ -217,6 +253,7 @@ public class BST<K extends Comparable<K>, V> {
         }
         x.right = deleteMax(x.right);
         x.n = size(x.left) + size(x.right) + 1;
+        x.h = Math.max(height1(x.left), height1(x.right)) + 1;
         return x;
     }
 
@@ -246,6 +283,7 @@ public class BST<K extends Comparable<K>, V> {
             x.left = t.left;
         }
         x.n = size(x.left) + size(x.right) + 1;
+        x.h = Math.max(height1(x.left), height1(x.right)) + 1;
         return x;
     }
 
