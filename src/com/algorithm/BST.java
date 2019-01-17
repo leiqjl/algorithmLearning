@@ -296,6 +296,22 @@ public class BST<K extends Comparable<K>, V> {
         }
     }
 
+    public K selectIteration(int k) {
+        Node x = root;
+        while (x != null) {
+            int size = size(x);
+            if (size > k) {
+                x = x.left;
+            } else if (size < k) {
+                k = k - size - 1;
+                x = x.right;
+            } else {
+                return x.key;
+            }
+        }
+        return null;
+    }
+
     public int rank(K key) {
         return rank(key, root);
     }
@@ -316,13 +332,20 @@ public class BST<K extends Comparable<K>, V> {
 
     public int rankIteration(K key) {
         Node x = root;
-        if (x == null) {
-            return 0;
-        }
+        int num = 0;
         while (x != null) {
-            //TODO
+            int cmp = key.compareTo(x.key);
+            if (cmp < 0) {
+                x = x.left;
+            } else if (cmp > 0) {
+                num = num + size(x.right) + 1;
+                x = x.right;
+            } else {
+                num += size(x.left);
+                break;
+            }
         }
-        return 0;
+        return num;
     }
 
     public void deleteMin() {
