@@ -457,6 +457,10 @@ public class BST<K extends Comparable<K>, V> {
         }
     }
 
+    public boolean isBinaryTree() {
+        return isBinaryTree(root);
+    }
+
     public boolean isBinaryTree(Node x) {
         if (x == null) {
             return false;
@@ -476,6 +480,47 @@ public class BST<K extends Comparable<K>, V> {
             size++;
         }
         return n == size;
+    }
+
+    public boolean isOrdered() {
+        return isOrdered(root, min(), max());
+    }
+
+    public boolean isOrdered(Node x, K min, K max) {
+        if (x == null) return true;
+        if (min != null && x.key.compareTo(min) <= 0) return false;
+        if (max != null && x.key.compareTo(max) >= 0) return false;
+        return isOrdered(x.left, min, x.key) && isOrdered(x.right, x.key, max);
+    }
+
+    public boolean hasNoDuplicates(Node x) {
+        if (x == null) {
+            return true;
+        }
+        if (x.left != null && x.key.compareTo(x.left.key) == 0) {
+            return false;
+        }
+        if (x.right != null && x.key.compareTo(x.right.key) == 0) {
+            return false;
+        }
+        return hasNoDuplicates(x.left) && hasNoDuplicates(x.right);
+    }
+
+    public boolean hasNoDuplicates() {
+        return hasNoDuplicates(root);
+    }
+
+    public boolean isBST() {
+        if (!isBinaryTree()) {
+            return false;
+        }
+        if (!isOrdered()) {
+            return false;
+        }
+        if (!hasNoDuplicates()) {
+            return false;
+        }
+        return true;
     }
 
 }
