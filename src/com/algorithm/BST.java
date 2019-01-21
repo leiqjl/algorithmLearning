@@ -28,6 +28,10 @@ public class BST<K extends Comparable<K>, V> {
         }
     }
 
+    public Node root() {
+        return root;
+    }
+
     public boolean isEmpty() {
         return size() == 0;
     }
@@ -451,6 +455,27 @@ public class BST<K extends Comparable<K>, V> {
         if (cmphi > 0) {
             keys(x.right, queue, lo, hi);
         }
+    }
+
+    public boolean isBinaryTree(Node x) {
+        if (x == null) {
+            return false;
+        }
+        int n = x.n;
+        Queue<Node> queue = new ArrayDeque<>();
+        queue.add(x);
+        int size = 0;
+        while (!queue.isEmpty()) {
+            Node remove = queue.remove();
+            if (remove.left != null) {
+                queue.add(remove.left);
+            }
+            if (remove.right != null) {
+                queue.add(remove.right);
+            }
+            size++;
+        }
+        return n == size;
     }
 
 }
