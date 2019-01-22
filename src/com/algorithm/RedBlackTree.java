@@ -21,6 +21,10 @@ public class RedBlackTree<K extends Comparable<K>, V>  {
         }
     }
 
+    public Node root() {
+        return root;
+    }
+
     private boolean isRed(Node x) {
         if (x == null) {
             return false;
@@ -28,10 +32,40 @@ public class RedBlackTree<K extends Comparable<K>, V>  {
         return x.color == RED;
     }
 
+    public boolean isEmpty() {
+        return root == null;
+    }
+
+    public int size() {
+        return size(root);
+    }
+
+    private int size(Node x) {
+        return x == null ? 0 : x.n;
+    }
+
+    public V get(K key) {
+        return get(root, key);
+    }
+
+    private V get(Node x, K key) {
+        if (x == null) {
+            return null;
+        }
+        int cmp = key.compareTo(x.key);
+        if (cmp < 0) {
+            return get(x.left, key);
+        } else if (cmp > 0) {
+            return get(x.right, key);
+        } else {
+            return x.val;
+        }
+    }
+
     private void flipColors(Node h) {
-        h.color = RED;
-        h.left.color = BLACK;
-        h.right.color = BLACK;
+        h.color = !h.color;
+        h.left.color = !h.left.color;
+        h.right.color = !h.right.color;
     }
 
     private Node rotateLeft(Node h) {
@@ -84,15 +118,52 @@ public class RedBlackTree<K extends Comparable<K>, V>  {
         return h;
     }
 
-    public boolean isEmpty() {
-        return root == null;
+    public void deleteMin() {
+        if (isEmpty()) {
+            return;
+        }
+        if (!isRed(root.left) && !isRed(root.right)) {
+            root.color = RED;
+        }
+        root = deleteMin(root);
+        if (!isEmpty()) {
+            root.color = BLACK;
+        }
     }
 
-    public int size() {
-        return size(root);
+    private Node deleteMin(Node h) {
+        if (h.left == null) {
+            return null;
+        }
+        if (!isRed(h.left) && !isRed(h.left.left)) {
+            h = moveRedLeft(h);
+        }
+        h.left = deleteMin(h.left);
+        return balance(h);
     }
 
-    private int size(Node x) {
-        return x == null ? 0 : x.n;
+    private Node moveRedLeft(Node h) {
+        flipColors(h);
+        if (isRed(h.right.left)) {
+            h.right = rotateRight(h.right);
+            h = rotateLeft(h);
+        }
+        return h;
     }
+
+    private Node balance(Node h) {
+        if (isRed(h.right)) {
+            h = rotateLeft(h);
+        }
+        if (isRed(h.left) && isRed(h.left.left)) {
+            h = rotateRight(h);
+        }
+        if (isRed(h.left) && isRed(h.right)) {
+            flipColors(h);
+        }
+        h.n = 1 + size(h.left) + size(h.right);
+        return h;
+    }
+
+
 }
