@@ -44,6 +44,10 @@ public class RedBlackTree<K extends Comparable<K>, V>  {
         return x == null ? 0 : x.n;
     }
 
+    public boolean contains(K key) {
+        return get(key) != null;
+    }
+
     public V get(K key) {
         return get(root, key);
     }
@@ -60,6 +64,36 @@ public class RedBlackTree<K extends Comparable<K>, V>  {
         } else {
             return x.val;
         }
+    }
+
+    public K min() {
+        Node x = min(root);
+        return x == null ? null : x.key;
+    }
+
+    private Node min(Node x) {
+        if (x == null) {
+            return null;
+        }
+        if (x.left == null) {
+            return x;
+        }
+        return min(x.left);
+    }
+
+    public K max() {
+        Node x = max(root);
+        return x == null ? null : x.key;
+    }
+
+    private Node max(Node x) {
+        if (x == null) {
+            return null;
+        }
+        if (x.right == null) {
+            return x;
+        }
+        return min(x.right);
     }
 
     private void flipColors(Node h) {
@@ -200,6 +234,53 @@ public class RedBlackTree<K extends Comparable<K>, V>  {
             flipColors(h);
         }
         return h;
+    }
+
+    public void delete(K key) {
+        if (key == null) {
+            return;
+        }
+        if (isEmpty()) {
+            return;
+        }
+        if (!contains(key)) {
+            return;
+        }
+        if (!isRed(root.left) && !isRed(root.right)) {
+            root.color = RED;
+        }
+        root = delete(root, key);
+        if (!isEmpty()) {
+            root.color = BLACK;
+        }
+    }
+
+    private Node delete(Node h, K key) {
+        if (key.compareTo(h.key) < 0) {
+            if (!isRed(h.left) && !isRed(h.left.left)) {
+                h = moveRedLeft(h);
+            }
+            h.left = delete(h.left, key);
+        } else {
+            if (isRed(h.left)) {
+                h = rotateRight(h);
+            }
+            if ((key.compareTo(h.key) == 0) && (h.right==null)) {
+                return null;
+            }
+            if (!isRed(h.right) && !isRed(h.right.left)) {
+                h = moveRedRight(h);
+            }
+            if (key.compareTo(h.key) == 0) {
+                Node x = min(h.right);
+                h.key = x.key;
+                h.val = x.val;
+                h.right = deleteMin(h.right);
+            } else {
+                h.right = delete(h.right, key);
+            }
+        }
+        return balance(h);
     }
 
 
