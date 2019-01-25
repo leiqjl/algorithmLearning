@@ -12,9 +12,9 @@ public class SequentialSearchST<K, V> {
         private V val;
         private Node next;
 
-        public Node(K key, V val, Node next)  {
-            this.key  = key;
-            this.val  = val;
+        public Node(K key, V val, Node next) {
+            this.key = key;
+            this.val = val;
             this.next = next;
         }
     }
@@ -31,28 +31,21 @@ public class SequentialSearchST<K, V> {
     }
 
     public boolean contains(K key) {
-        if (key == null) {
-            throw new IllegalArgumentException("argument to contains() is null");
-        }
+        if (key == null) throw new IllegalArgumentException("argument to contains() is null");
         return get(key) != null;
     }
 
     public V get(K key) {
-        if (key == null) {
-            throw new IllegalArgumentException("argument to get() is null");
-        }
+        if (key == null) throw new IllegalArgumentException("argument to get() is null");
         for (Node x = first; x != null; x = x.next) {
-            if (key.equals(x.key)) {
+            if (key.equals(x.key))
                 return x.val;
-            }
         }
         return null;
     }
 
     public void put(K key, V val) {
-        if (key == null) {
-            throw new IllegalArgumentException("first argument to put() is null");
-        }
+        if (key == null) throw new IllegalArgumentException("first argument to put() is null");
         if (val == null) {
             delete(key);
             return;
@@ -69,16 +62,12 @@ public class SequentialSearchST<K, V> {
     }
 
     public void delete(K key) {
-        if (key == null) {
-            throw new IllegalArgumentException("argument to delete() is null");
-        }
+        if (key == null) throw new IllegalArgumentException("argument to delete() is null");
         first = delete(first, key);
     }
 
     private Node delete(Node x, K key) {
-        if (x == null) {
-            return null;
-        }
+        if (x == null) return null;
         if (key.equals(x.key)) {
             n--;
             return x.next;
@@ -89,9 +78,8 @@ public class SequentialSearchST<K, V> {
 
     public Iterable<K> keys()  {
         Queue<K> queue = new ArrayDeque<>();
-        for (Node x = first; x != null; x = x.next) {
+        for (Node x = first; x != null; x = x.next)
             queue.add(x.key);
-        }
         return queue;
     }
 }
