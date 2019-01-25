@@ -1,4 +1,6 @@
-package com.algorithm;
+package com.algorithm.graph;
+
+import com.algorithm.Bag;
 
 public class Graph {
     private final int V;

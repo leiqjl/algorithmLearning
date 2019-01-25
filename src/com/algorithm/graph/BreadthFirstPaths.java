@@ -1,27 +1,36 @@
-package com.algorithm;
+package com.algorithm.graph;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
 import java.util.Stack;
 
-public class DepthFirstPaths {
+public class BreadthFirstPaths {
     private boolean[] marked;
     private int[] edgeTo;
     private final int s;
 
-    public DepthFirstPaths(Graph g, int s) {
+    public BreadthFirstPaths(Graph g, int s) {
         marked = new boolean[g.V()];
         edgeTo = new int[g.V()];
         this.s = s;
-        dfs(g, s);
+        bfs(g, s);
     }
 
-    private void dfs(Graph g, int v) {
-        marked[v] = true;
-        for (int w : g.adj(v)) {
-            if (!marked[w]) {
-                edgeTo[w] = v;
-                dfs(g, w);
+    private void bfs(Graph g, int s) {
+        Queue<Integer> queue = new ArrayDeque<>();
+        marked[s] = true;
+        queue.add(s);
+        while (!queue.isEmpty()) {
+            Integer v = queue.remove();
+            for (int w : g.adj(v)) {
+                if (!marked[w]) {
+                    edgeTo[w] = v;
+                    marked[w] = true;
+                    queue.add(w);
+                }
             }
         }
+
     }
 
     public boolean hasPathTo(int v) {

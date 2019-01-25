@@ -1,4 +1,4 @@
-package com.algorithm;
+package com.algorithm.graph;
 
 public class DepthFirstSearch {
     private boolean[] marked;
