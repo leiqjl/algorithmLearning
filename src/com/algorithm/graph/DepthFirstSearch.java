@@ -1,5 +1,8 @@
 package com.algorithm.graph;
 
+/**
+ * 单点连通性
+ */
 public class DepthFirstSearch {
     private boolean[] marked;
     private int count;

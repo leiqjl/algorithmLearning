@@ -2,6 +2,9 @@ package com.algorithm.graph;
 
 import java.util.Stack;
 
+/**
+ * 单点路径
+ */
 public class DepthFirstPaths {
     private boolean[] marked;
     private int[] edgeTo;
