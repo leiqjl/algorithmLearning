@@ -5,6 +5,8 @@ public class Graph {
     private int E;
     private Bag<Integer>[] adj;
 
+    private static String NEWLINE = "\n";
+
     public Graph(int V) {
         this.V = V;
         this.E = 0;
@@ -30,6 +32,20 @@ public class Graph {
 
     public Iterable<Integer> adj(int v) {
         return adj[v];
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder();
+        s.append(V).append(" vertices, ").append(E).append(" edges").append(NEWLINE);
+        for (int v = 0; v < V; v++) {
+            s.append(v).append(": ");
+            for (int w : adj[v]) {
+                s.append(w).append(" ");
+            }
+            s.append(NEWLINE);
+        }
+        return s.toString();
     }
 
 }
