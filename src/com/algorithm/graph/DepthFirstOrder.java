@@ -2,8 +2,8 @@ package com.algorithm.graph;
 
 
 import com.algorithm.Queue;
+import com.algorithm.Stack;
 
-import java.util.Stack;
 
 public class DepthFirstOrder {
     private boolean[] marked;
