@@ -1,6 +1,6 @@
 package com.algorithm.graph;
 
-import java.util.Stack;
+import com.algorithm.Stack;
 
 public class DirectedCycle {
     private boolean[] marked;

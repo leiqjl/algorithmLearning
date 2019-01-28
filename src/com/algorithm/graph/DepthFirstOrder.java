@@ -1,7 +1,8 @@
 package com.algorithm.graph;
 
-import java.util.ArrayDeque;
-import java.util.Queue;
+
+import com.algorithm.Queue;
+
 import java.util.Stack;
 
 public class DepthFirstOrder {
@@ -13,8 +14,8 @@ public class DepthFirstOrder {
     private Stack<Integer> reversePost;
 
     public DepthFirstOrder(Digraph g) {
-        pre = new ArrayDeque<>();
-        post = new ArrayDeque<>();
+        pre = new Queue<>();
+        post = new Queue<>();
         reversePost = new Stack<>();
         marked = new boolean[g.V()];
         for (int v = 0; v < g.V(); v++) {
@@ -26,13 +27,13 @@ public class DepthFirstOrder {
 
     private void dfs(Digraph g, int v) {
         marked[v] = true;
-        pre.add(v);
+        pre.enqueue(v);
         for (int w : g.adj(v)) {
             if (!marked[w]) {
                 dfs(g, w);
             }
         }
-        post.add(v);
+        post.enqueue(v);
         reversePost.push(v);
     }
 
