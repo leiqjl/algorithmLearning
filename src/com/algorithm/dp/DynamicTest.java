@@ -1,4 +1,4 @@
-package com.algorithm;
+package com.algorithm.dp;
 
 public class DynamicTest {
     private int[][] matrix;

@@ -1,4 +1,4 @@
-package com.algorithm;
+package com.algorithm.dp;
 
 public class WeightTest {
     // 回溯算法实现。注意：我把输入的变量都定义成了成员变量。

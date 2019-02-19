@@ -1,4 +1,4 @@
-package com.algorithm;
+package com.algorithm.dp;
 
 public class CoinTest {
     private static int[] coin = {1, 3, 5};
