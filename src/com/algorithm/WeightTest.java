@@ -116,7 +116,6 @@ public class WeightTest {
         states[0][0] = 0;
         states[0][weight[0]] = value[0];
         for (int i = 1; i < n; i++) {
-            int tmp = w - weight[i];
             for (int j = 0; j <= w; j++) {
                 if (states[i - 1][j] > -1) {
                     //不放i
